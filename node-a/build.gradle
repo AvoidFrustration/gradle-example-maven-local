@@ -1,0 +1,6 @@
+apply plugin: 'java'
+
+dependencies {
+    compile project(':api-a:api-a-server')
+    compile project(':api-b:api-b-server')
+}

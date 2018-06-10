@@ -1,5 +1,6 @@
 subprojects{
     apply plugin: 'java'
+    apply plugin: 'maven-publish'
 
     dependencies {
         testImplementation (
@@ -14,6 +15,19 @@ subprojects{
     repositories {
         mavenCentral()
     }
+
+    publishing {
+        publications {
+            mavenJava(MavenPublication) {
+                from components.java
+            }
+        }
+        repositories {
+            mavenLocal()
+        }
+    }
+
+    build.dependsOn publishToMavenLocal
 }
 
 

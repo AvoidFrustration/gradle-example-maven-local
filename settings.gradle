@@ -1,3 +1,5 @@
+enableFeaturePreview('STABLE_PUBLISHING')
+
 include 'util'
 include 'api-a:api-a-server'
 include 'api-a:api-a-common'

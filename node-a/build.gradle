@@ -1,6 +1,23 @@
 apply plugin: 'java'
+apply plugin: 'maven-publish'
 
 dependencies {
     compile project(':api-a:api-a-server')
     compile project(':api-b:api-b-server')
 }
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+            afterEvaluate {
+                artifactId = jar.baseName
+            }
+        }
+    }
+    repositories {
+        mavenLocal()
+    }
+}
+
+build.dependsOn publishToMavenLocal

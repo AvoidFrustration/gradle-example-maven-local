@@ -123,3 +123,4 @@ There are a few interesting things in this example that will drive future exampl
  * Not every directory needs a build.gradle
  * Using `subprojects` removes a lot of copy/paste code. But not all modules are java projects
  * Using the java-library with api dependencies has value in reducing exposed transitive dependencies
+ * Use $rootDir instead of relative path (../../) to find imported build files, and use double quotes ""

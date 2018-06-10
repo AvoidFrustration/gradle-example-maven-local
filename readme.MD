@@ -1,4 +1,4 @@
-# Example of a simple multi-module gradle project
+# Example of a simple multi-module java gradle project
 This is an example of a multi-module gradle project.  This tries to be the simplest configuration.
 
 The project layout is

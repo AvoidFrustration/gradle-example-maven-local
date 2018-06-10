@@ -1,3 +1,4 @@
+include 'util'
 include 'api-a:api-a-server'
 include 'api-a:api-a-common'
 include 'api-a:api-a-client'
@@ -6,3 +7,4 @@ include 'api-b:api-b-common'
 include 'api-b:api-b-client'
 include 'node-a'
 include 'client-a'
+

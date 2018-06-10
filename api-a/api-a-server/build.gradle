@@ -1,16 +1,8 @@
-apply plugin: 'java-library'
+apply from: '../../gradle/java.gradle'
 
 dependencies {
     dependencies {
-        implementation project(':api-a:api-a-common')
-        testImplementation(
-                'org.junit.jupiter:junit-jupiter-api:5.1.0'
-        )
-        testRuntimeOnly(
-                'org.junit.jupiter:junit-jupiter-engine:5.1.0'
-        )
+        implementation project(':util')
+        api project(':api-a:api-a-common')
     }
-}
-repositories {
-    mavenCentral()
 }

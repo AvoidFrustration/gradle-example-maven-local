@@ -2,7 +2,8 @@ apply plugin: 'java-library'
 
 dependencies {
     dependencies {
-        implementation project(':api-a:api-a-common')
+        implementation project(':util')
+        api project(':api-a:api-a-common')
         testImplementation(
                 'org.junit.jupiter:junit-jupiter-api:5.1.0'
         )

@@ -43,7 +43,6 @@ repositories {
 }
 ```
 
-There are two types of dependencies between the projects.
 ### Using discrete .gradle files, subprojects, or apply from
 There are a few ways to configure a modules.  The module may have a build.gradle file containing all or part of its 
 configuration.  One of the parent modules may contain a subproject configuration that is applied to any children based

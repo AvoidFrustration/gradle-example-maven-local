@@ -2,7 +2,7 @@ apply from: "$rootDir/gradle/java.gradle"
 
 dependencies {
     dependencies {
-        implementation project(':util')
         api project(':api-a:api-a-common')
+        implementation project(':util')
     }
 }

@@ -1,4 +1,4 @@
-apply from: '../../gradle/java.gradle'
+apply from: "$rootDir/gradle/java.gradle"
 
 dependencies {
     dependencies {

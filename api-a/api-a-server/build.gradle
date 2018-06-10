@@ -1,10 +1,10 @@
-apply from: '../../gradle/java.gradle'
+apply from: "$rootDir/gradle/java.gradle"
 apply from: "$rootDir/gradle/maven_local.gradle"
 
 dependencies {
     dependencies {
-        implementation project(':util')
         api project(':api-a:api-a-common')
+        implementation project(':util')
     }
 }
 

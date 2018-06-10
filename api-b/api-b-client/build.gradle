@@ -1,4 +1,4 @@
 dependencies {
-    implementation project(':api-b:api-b-common')
+    compile project(':api-b:api-b-common')
     implementation project(':util')
 }

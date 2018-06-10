@@ -3,8 +3,8 @@ apply plugin: 'maven-publish'
 
 dependencies {
     dependencies {
-        implementation project(':util')
         api project(':api-a:api-a-common')
+        implementation project(':util')
         testImplementation(
                 'org.junit.jupiter:junit-jupiter-api:5.1.0'
         )

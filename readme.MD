@@ -1,7 +1,8 @@
-# Example of a simple multi-module java gradle project
-This is an example of a multi-module gradle project.  This tries to be the simplest configuration.
+# Example of a multi-module java gradle project with a local maven repo
+This continuation of the simple multi-module java example.  This repo adds examples for publishing jars to the local
+maven repo.  This matches normal maven build functionality.
 
-The project layout is
+The project layout continues to be
 
     root
         api-a - grouping folder
@@ -20,107 +21,45 @@ The api client and modules depend on their api common module.  The client-a modu
 the server-a module depends on the api server modules.  Each module has a class that ensures the dependencies are present.
 
 ## What is in this example
-The primary goal of this example is to show how to create a minimal gradle project that contains java modules and 
-grouping folders. The grouping folders can be empty or have subproject configurations.  Each project will need junit
-and the one of the java plugins.  An example configuration is
+The primary goal of this example is to show how to configure the publishing of maven artifacts to the local repo on each
+build in gradle.  The configuration will use the maven-publish plugin.  The publishing configuration only contains the 
+local maven repository.  And finally publishToMavenLocal will be run after any build task.
 
 ```groovy
-apply plugin: 'java-library'
+    apply plugin: 'maven-publish'
 
-dependencies {
-    dependencies {
-        testImplementation(
-                'org.junit.jupiter:junit-jupiter-api:5.1.0'
-        )
-        testRuntimeOnly(
-                'org.junit.jupiter:junit-jupiter-engine:5.1.0'
-        )
+    publishing {
+        publications {
+            mavenJava(MavenPublication) {
+                from components.java
+            }
+        }
+        repositories {
+            mavenLocal()
+        }
     }
-}
 
-repositories {
-    mavenCentral()
-}
+    build.dependsOn publishToMavenLocal
+
 ```
 
 There are two types of dependencies between the projects.
 ### Using discrete .gradle files, subprojects, or apply from
-There are a few ways to configure a modules.  The module may have a build.gradle file containing all or part of its 
-configuration.  One of the parent modules may contain a subproject configuration that is applied to any children based
-on filtering.  And finally(?) the module's build.gradle file may import a configuration using `apply from:`
+This example continues to have the configuration examples from the simple project.  The publishing configuration
+is just added to the existing build.gradle files.
 
-The root module does not contain a build.gradle file.  This is interesting itself as there isn't a requirement for a 
-build.gradle file in the directory that `./gradlew build` is run.
+### Using task publishToMavenLocal vs publish
+running publish will also deploy the artifacts to the maven repo but adds a timestamp and build number to the jar name.  The publishToMavenLocal
+task follows the typical maven local repository filename of just using the version number.  Examples of the two are
 
-The api-a modules use build.gradle files in the java projects only; none in the parent.  Both the api-a client and common
-modules contain their full configuration. 
-
-The api-a server project uses `apply from:` for most of its configuration.  This allows for a configuration to be imported.
-
-```groovy
-apply from: "$rootDir/gradle/java.gradle"
-
-dependencies {
-    dependencies {
-        api project(':api-a:api-a-common')
-        implementation project(':util')
-    }
-}
+```text
+node-a-0.1-20180610.233613-1.jar
+node-a-0.1-SNAPSHOT.jar
 ```
 
-The api-b module uses a build.gradle file in the parent to contain most of the configurations.  Only the api-b client and
-server contain build.gradle files for their dependency on the common module.
-
-```groovy
-subprojects{
-    apply plugin: 'java'
-
-    dependencies {
-        testImplementation (
-                'org.junit.jupiter:junit-jupiter-api:5.1.0'
-        )
-        testRuntimeOnly (
-                'org.junit.jupiter:junit-jupiter-engine:5.1.0'
-        )
-
-    }
-
-    repositories {
-        mavenCentral()
-    }
-}
-```
-
-### Using plugins 'java' vs 'java-library'
-Using the java-libary plugin allows for the use of api dependencies.  This dependency will avoid pulling in transitive
-dependencies during compile time.  This works in IntelliJ.
-
-api-a usings the java-library plugin like the above example and the client and server subprojects add an api dependency for 
-common and util.  util is an implementation dependency so modules dependent on client or server will not see util through
-those modules.  Conversely, common is an api dependency an is available like a maven transitive dependency.
-
-```groovy
-dependencies {
-    dependencies {
-        api project(':api-a:api-a-common')
-        implementation project(':util')
-    }
-}
-```
-
-api-b uses the java plugin and uses the deprecated compile dependency instead of the api available in the java-library.
-
-```groovy
-dependencies {
-    compile project(':api-b:api-b-common')
-    implementation project(':util')
-}
-```
+The publish task format is more typical of a name on a remote snapshot repository.
 
 ### Takeaways from this Example
 There are a few interesting things in this example that will drive future examples.
- * Using `apply from:` allows for importing configuration
- * Not every directory needs a build.gradle
- * Using `subprojects` removes a lot of copy/paste code. But not all modules are java projects
- * Using the java-library with api dependencies has value in reducing exposed transitive dependencies
- * Use $rootDir instead of relative path (../../) to find imported build files, and use double quotes ""
+ * Use publishToMavenLocal instead of publish
+ * Use dependsOn to link tasks

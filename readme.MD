@@ -26,6 +26,7 @@ build in gradle.  The configuration will use the maven-publish plugin.  The publ
 local maven repository.  And finally publishToMavenLocal will be run after any build task.
 
 ```groovy
+<<<<<<< HEAD
     apply plugin: 'maven-publish'
 
     publishing {
@@ -37,13 +38,27 @@ local maven repository.  And finally publishToMavenLocal will be run after any b
         repositories {
             mavenLocal()
         }
+=======
+apply plugin: 'java-library'
+
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
+    
+dependencies {
+    dependencies {
+        testImplementation(
+                'org.junit.jupiter:junit-jupiter-api:5.1.0'
+        )
+        testRuntimeOnly(
+                'org.junit.jupiter:junit-jupiter-engine:5.1.0'
+        )
+>>>>>>> upstream/master
     }
 
     build.dependsOn publishToMavenLocal
 
 ```
 
-There are two types of dependencies between the projects.
 ### Using discrete .gradle files, subprojects, or apply from
 This example continues to have the configuration examples from the simple project.  The publishing configuration
 is just added to the existing build.gradle files.
@@ -57,7 +72,61 @@ node-a-0.1-20180610.233613-1.jar
 node-a-0.1-SNAPSHOT.jar
 ```
 
+<<<<<<< HEAD
 The publish task format is more typical of a name on a remote snapshot repository.
+=======
+The api-b module uses a build.gradle file in the parent to contain most of the configurations.  Only the api-b client and
+server contain build.gradle files for their dependency on the common module.
+
+```groovy
+subprojects{
+    apply plugin: 'java'
+
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+    
+    dependencies {
+        testImplementation (
+                'org.junit.jupiter:junit-jupiter-api:5.1.0'
+        )
+        testRuntimeOnly (
+                'org.junit.jupiter:junit-jupiter-engine:5.1.0'
+        )
+
+    }
+
+    repositories {
+        mavenCentral()
+    }
+}
+```
+
+### Using plugins 'java' vs 'java-library'
+Using the java-libary plugin allows for the use of api dependencies.  This dependency will avoid pulling in transitive
+dependencies during compile time.  This works in IntelliJ.
+
+api-a usings the java-library plugin like the above example and the client and server subprojects add an api dependency for 
+common and util.  util is an implementation dependency so modules dependent on client or server will not see util through
+those modules.  Conversely, common is an api dependency an is available like a maven transitive dependency.
+
+```groovy
+dependencies {
+    dependencies {
+        api project(':api-a:api-a-common')
+        implementation project(':util')
+    }
+}
+```
+
+api-b uses the java plugin and uses the deprecated compile dependency instead of the api available in the java-library.
+
+```groovy
+dependencies {
+    compile project(':api-b:api-b-common')
+    implementation project(':util')
+}
+```
+>>>>>>> upstream/master
 
 ### Takeaways from this Example
 There are a few interesting things in this example that will drive future examples.

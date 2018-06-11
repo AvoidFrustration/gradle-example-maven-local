@@ -1,5 +1,8 @@
 apply plugin: 'java'
 
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
+
 dependencies {
     compile project(':api-a:api-a-client')
     compile project(':api-b:api-b-client')

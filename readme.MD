@@ -27,6 +27,9 @@ and the one of the java plugins.  An example configuration is
 ```groovy
 apply plugin: 'java-library'
 
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
+    
 dependencies {
     dependencies {
         testImplementation(
@@ -74,6 +77,9 @@ server contain build.gradle files for their dependency on the common module.
 subprojects{
     apply plugin: 'java'
 
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+    
     dependencies {
         testImplementation (
                 'org.junit.jupiter:junit-jupiter-api:5.1.0'
